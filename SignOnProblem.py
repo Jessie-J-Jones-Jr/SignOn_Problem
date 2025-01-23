@@ -20,7 +20,7 @@ arr = ["30 1 sign-on", "30 5 sign-out", "1", "50 100 sign-out", "100 20 sign-on"
 num = 0
 quick_sort= []
 pattern = re.compile("[0-9]+")
-results_dict = {}
+results= []
 
 
 def processLogs(logs, maxSpan):
@@ -56,10 +56,12 @@ def processLogs(logs, maxSpan):
 
         time_stamp2 = int(logs[i+1].split()[1])
         action = log_entry[2]
+        action_next = logs[i+1].split()[2]
 
         action_count = 0
         delete_me = False
         cause_code =""
+        diff_num = 0
         
        #now that we have variables defined we can process
         condition3= type(pattern.fullmatch(user_name)) != None
@@ -68,9 +70,10 @@ def processLogs(logs, maxSpan):
         condition6= time_stamp2 > time_stamp
         condition7= 0 < time_stamp <= 10**9
         condition8= action == "sign-in" or action == "sign-out"
-        condition9= user_name == user_name_next and user_name != user_name_prev
-        condition10= 1<= maxSpan
-        condition11= maxSpan <= 10**5
+        condition9= action_next == "sign-out" and action == "sign-in"
+        condition10= user_name == user_name_next and user_name != user_name_prev
+        condition11= 1<= maxSpan
+        condition12= maxSpan <= 10**5
 
         if not condition3:
             print(f" Condition 3 Failure: {log_entry}")
@@ -93,13 +96,18 @@ def processLogs(logs, maxSpan):
         if not condition9:
             print(f" Condition 9 Failure: {log_entry}")
             continue
+        diff_num = time_stamp2 - time_stamp
+        results.append(str(diff_num) + " " + user_name)
+        
         if not condition10:
             print(f" Condition 10 Failure: {log_entry}")
             continue
         if not condition11:
             print(f" Condition 11 Failure: {log_entry}")
             continue
-    
+        if not condition12:
+            print(f" Condition 12 Failure: {log_entry}")
+            continue
         
     #     #Handle USER ID
     #     if pattern.fullmatch(user_name) is not None:
@@ -150,6 +158,7 @@ def processLogs(logs, maxSpan):
     # return results_dict
             
 processLogs(arr, 1)
+print(results)
    
         
     #     if logs[i].split()[0] == logs[i+1].split()[0]:
