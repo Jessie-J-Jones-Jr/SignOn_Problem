@@ -6,7 +6,15 @@ import random
 import re
 import sys
 
-arr = ["30 1 sign-on", "30 5 sign-out", "1", "50 100 sign-out", "100 20 sign-on", "100 2 sign-out", "50 1 sign-on", "55"]
+arr = ["30 1 sign-in", 
+       "30 5 sign-out", 
+       "1", 
+       "50 100 sign-out", 
+       "100 2 sign-in", 
+       "100 200 sign-out", 
+       "50 1 sign-on", 
+       "55",
+       "100 201 sign-in"]
 
 #
 # Complete the 'processLogs' function below.
@@ -71,9 +79,10 @@ def processLogs(logs, maxSpan):
         condition7= 0 < time_stamp <= 10**9
         condition8= action == "sign-in" or action == "sign-out"
         condition9= action_next == "sign-out" and action == "sign-in"
-        condition10= user_name == user_name_next and user_name != user_name_prev
-        condition11= 1<= maxSpan
-        condition12= maxSpan <= 10**5
+        condition10= user_name == user_name_next 
+        condition11= user_name != user_name_prev
+        condition12= 1<= maxSpan
+        condition13= maxSpan <= 10**5
 
         if not condition3:
             print(f" Condition 3 Failure: {log_entry}")
@@ -96,19 +105,27 @@ def processLogs(logs, maxSpan):
         if not condition9:
             print(f" Condition 9 Failure: {log_entry}")
             continue
-        diff_num = time_stamp2 - time_stamp
-        results.append(str(diff_num) + " " + user_name)
         
         if not condition10:
             print(f" Condition 10 Failure: {log_entry}")
+            print(condition10)
             continue
+
         if not condition11:
             print(f" Condition 11 Failure: {log_entry}")
             continue
+        print(condition11)
+        diff_num = time_stamp2 - time_stamp
+        results.append(str(diff_num) + " " + user_name)
+
         if not condition12:
             print(f" Condition 12 Failure: {log_entry}")
             continue
+        if not condition13:
+            print(f" Condition 13 Failure: {log_entry}")
+            continue
         
+
     #     #Handle USER ID
     #     if pattern.fullmatch(user_name) is not None:
     #         if len(user_name) <=9:
