@@ -6,6 +6,7 @@ import random
 import re
 import sys
 
+arr = ["30 1 sign-on", "30 5 sign-out", "1", "50 100 sign-out", "100 20 sign-on", "100 2 sign-out", "50 1 sign-on", "55"]
 
 #
 # Complete the 'processLogs' function below.
@@ -24,7 +25,7 @@ results_dict = {}
 
 def processLogs(logs, maxSpan):
     logs.sort()
-    # print(logs)
+    print(logs)
     # maxSpan = 0
     # diff_num = 0
     # new = ""
@@ -32,17 +33,25 @@ def processLogs(logs, maxSpan):
     # track = 0
     
     for i in range(len(logs)-1):
-        
-        user_name = logs[i].split()[0]
+        log_entry= logs[i].split()
+        user_name = log_entry[0]
         user_name_next = logs[i+1].split()[0]
         user_name_prev = logs[i-1].split()[0]
-        time_stamp = int(logs[i].split()[1])
+        time_stamp = int(log_entry[1])
         time_stamp2 = int(logs[i+1].split()[1])
-        action = logs[i].split()[2]
+        action = log_entry[2]
         action_count = 0
         deleteme = False
         cause_code =""
         
+        condition1 = len(log_entry) == 3
+        condition2 = type(pattern.fullmatch(user_name)) != None
+        condition3 = len(user_name) <= 9
+        condition4 = list(str(time_stamp))[0] != "0"
+        condition5 = 0 < time_stamp <= 10**9
+        condition6 = action == "sign-in" or action == "sign-out"
+        condition7 = time_stamp2 > time_stamp
+
         
         #Handle USER ID
         if pattern.fullmatch(user_name) is not None:
@@ -92,7 +101,7 @@ def processLogs(logs, maxSpan):
         results = list(results_dict.keys())
     return results_dict
             
-     
+processLogs(arr, 1)
    
         
     #     if logs[i].split()[0] == logs[i+1].split()[0]:
@@ -116,26 +125,26 @@ def processLogs(logs, maxSpan):
     #     print(new)
     #     results.append(new)
     #     results.sort(reverse=True)
-    return results
+    # return results
             
 
 
-if __name__ == '__main__':
-    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+# if __name__ == '__main__':
+#     fptr = open(os.environ['OUTPUT_PATH'], 'w')
 
-    logs_count = int(input().strip())
+#     logs_count = int(input().strip())
 
-    logs = []
+#     logs = []
 
-    for _ in range(logs_count):
-        logs_item = input()
-        logs.append(logs_item)
+#     for _ in range(logs_count):
+#         logs_item = input()
+#         logs.append(logs_item)
 
-    maxSpan = int(input().strip())
+#     maxSpan = int(input().strip())
 
-    result = processLogs(logs, maxSpan)
+#     result = processLogs(logs, maxSpan)
 
-    fptr.write('\n'.join(result))
-    fptr.write('\n')
+#     fptr.write('\n'.join(result))
+#     fptr.write('\n')
 
-    fptr.close()
+#     fptr.close()
